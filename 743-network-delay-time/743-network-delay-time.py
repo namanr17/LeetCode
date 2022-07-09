@@ -1,10 +1,8 @@
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        graph = {}
+        graph = defaultdict(list)
         for u, v, w in times:
-            try:
-                graph[u].append((v, w))
-            except: graph[u] = [(v, w)]
+            graph[u].append((v, w))
             
         dist = [float('inf')] * n
         q = deque([])
