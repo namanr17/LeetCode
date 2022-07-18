@@ -1,21 +1,17 @@
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        count = 0
-        prefix = [n for n in nums]
-        for i in range(1, len(nums)):
-            prefix[i] += prefix[i-1]
+        count, prefSum = 0, 0
                 
-        m = {}
-        for pref in prefix:
-            if pref == k:
-                count += 1
+        m = {0:1}
+        for num in nums:
+            prefSum += num
                 
-            if pref - k in m.keys():
-                count += m[pref-k]
+            if prefSum - k in m.keys():
+                count += m[prefSum-k]
             
-            if pref in m.keys():
-                m[pref] += 1
-            else:   m[pref] = 1
+            if prefSum in m.keys():
+                m[prefSum] += 1
+            else:   m[prefSum] = 1
                 
         return count
         
