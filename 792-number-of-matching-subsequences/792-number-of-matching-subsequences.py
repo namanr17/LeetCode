@@ -1,27 +1,24 @@
+class Node:
+    def __init__(self, word):
+        self.word = word
+        self.index = 0
+
 class Solution:
     def numMatchingSubseq(self, s: str, words: List[str]) -> int:
-        m = {'':0}
-        words = sorted(words, key=len)
-        
-        def find(suff: str) -> float:
-            j = len(suff)
-            while(suff[:j] not in m):
-                j -= 1
-            i = m[suff[:j]]
-            while(i < len(s) and j < len(suff)):
-                if s[i] == suff[j]:
-                    j += 1
-                    m[suff[:j]] = i+1
-                i += 1
-            if j != len(suff):
-                m[suff] = float('inf')
-            return m[suff]
-        
-        count = 0
+        buckets = defaultdict(list)
         for word in words:
-            if find(word) != float('inf'):
-                count += 1
-                
-        # print(m)
-        
-        return count
+            startingChar = word[0]
+            buckets[startingChar].append(Node(word))
+
+        ans = 0
+        for c in s:
+            currBucket = buckets[c]
+            buckets[c] = []
+            for node in currBucket:
+                node.index += 1  # Point to next character of node.word
+                if node.index == len(node.word):
+                    ans += 1
+                else:
+                    startingChar = node.word[node.index]
+                    buckets[startingChar].append(node)
+        return ans
