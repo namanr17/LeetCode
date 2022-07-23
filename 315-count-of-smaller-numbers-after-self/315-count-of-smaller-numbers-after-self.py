@@ -33,7 +33,8 @@ class Solution:
                 out[k] = nodes[right]
                 right, k = right+1, k+1
             
-            return out
+            nodes[start:end+1] = out
+            return
         
         def solve(start, end):
             if start >= end:
@@ -43,7 +44,7 @@ class Solution:
             
             solve(start, mid)
             solve(mid+1, end)
-            nodes[start:end+1] = merge(start, mid, end)
+            merge(start, mid, end)
             
             return 
         
