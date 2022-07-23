@@ -1,12 +1,7 @@
 class Solution:
     def countSmaller(self, nums: List[int]) -> List[int]:
-        class node:
-            def __init__(self, idx, val):
-                self.idx = idx
-                self.val = val
-        
         ans = [0] * len(nums)
-        nodes = [node(i, num) for (i, num) in enumerate(nums)]
+        nodes = [(i, num) for (i, num) in enumerate(nums)]
             
         def merge(start, mid, end):
             left, right, k = start, mid+1, 0
@@ -14,9 +9,9 @@ class Solution:
             numsGreater = 0
             
             while(left <= mid and right <= end):
-                if nodes[left].val <= nodes[right].val:
+                if nodes[left][1] <= nodes[right][1]:
                     out[k] = nodes[left]
-                    ans[nodes[left].idx] += numsGreater
+                    ans[nodes[left][0]] += numsGreater
                     left += 1
                 else:
                     numsGreater += 1
@@ -26,7 +21,7 @@ class Solution:
                 
             while(left <= mid):
                 out[k] = nodes[left]
-                ans[nodes[left].idx] += numsGreater
+                ans[nodes[left][0]] += numsGreater
                 left, k = left+1, k+1
                 
             while(right <= end):
