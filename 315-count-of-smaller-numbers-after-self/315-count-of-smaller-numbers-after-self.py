@@ -6,46 +6,46 @@ class Solution:
                 self.val = val
         
         ans = [0] * len(nums)
-        m = [node(i, num) for (i, num) in enumerate(nums)]
+        nodes = [node(i, num) for (i, num) in enumerate(nums)]
             
-        def merge(left, right):
-            i, j, k = 0, 0, 0
-            out = [None] * (len(left) + len(right))
+        def merge(start, mid, end):
+            left, right, k = start, mid+1, 0
+            out = [None] * (end-start+1)
             numsGreater = 0
             
-            while(i < len(left) and j < len(right)):
-                if left[i].val <= right[j].val:
-                    out[k] = left[i]
-                    ans[left[i].idx] += numsGreater
-                    i += 1
+            while(left <= mid and right <= end):
+                if nodes[left].val <= nodes[right].val:
+                    out[k] = nodes[left]
+                    ans[nodes[left].idx] += numsGreater
+                    left += 1
                 else:
                     numsGreater += 1
-                    out[k] = right[j]
-                    j += 1
+                    out[k] = nodes[right]
+                    right += 1
                 k += 1
                 
-            while(i < len(left)):
-                out[k] = left[i]
-                ans[left[i].idx] += numsGreater
-                i += 1
-                k += 1
+            while(left <= mid):
+                out[k] = nodes[left]
+                ans[nodes[left].idx] += numsGreater
+                left, k = left+1, k+1
                 
-            while(j < len(right)):
-                out[k] = right[j]
-                j += 1
-                k += 1
-                
+            while(right <= end):
+                out[k] = nodes[right]
+                right, k = right+1, k+1
+            
             return out
         
-        def solve(arr):
-            if len(arr) < 2:
-                return arr
+        def solve(start, end):
+            if start >= end:
+                return
             
-            mid = len(arr) // 2
-            left = solve(arr[:mid])
-            right = solve(arr[mid:])
+            mid = (end+start) // 2
             
-            return merge(left, right)
+            solve(start, mid)
+            solve(mid+1, end)
+            nodes[start:end+1] = merge(start, mid, end)
+            
+            return 
         
-        solve(m)        
+        solve(0, len(nums)-1)        
         return ans
