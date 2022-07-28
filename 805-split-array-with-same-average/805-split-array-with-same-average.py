@@ -10,13 +10,10 @@ class Solution:
             if i == 0 or n == 0 or S < 0:
                 return False
             
-            if nums[i-1] <= S:
-                return solve(S-nums[i-1], n-1, i-1) or solve(S, n, i-1)
-            
-            return solve(S, n, i-1)
+            return solve(S-nums[i-1], n-1, i-1) or solve(S, n, i-1)
         
         S_, n_ = sum(nums), len(nums)
-        for k in range(1, n_):
+        for k in range(1, n_//2 + 1):
             if (S_ * k) % n_ == 0 and solve((S_ * k) // n_, k, len(nums)):
                 return True
             
