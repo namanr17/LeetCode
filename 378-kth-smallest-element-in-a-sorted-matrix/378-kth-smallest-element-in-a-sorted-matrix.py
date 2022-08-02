@@ -13,13 +13,11 @@ class Solution:
             
             return count
         
-        ans = None
         lo, hi = matrix[0][0], matrix[n-1][n-1]
-        while(lo <= hi):
+        while(lo < hi):
             mid = (lo + hi) // 2
-            if countLessOrEqual(mid) >= k:
-                hi = mid - 1
-                ans = mid
-            else:   lo = mid + 1
+            if countLessOrEqual(mid) < k:
+                lo = mid + 1
+            else:   hi = mid
         
-        return ans
+        return lo
