@@ -1,8 +1,8 @@
 class MyCalendar:
     def __init__(self):
-        self.calendar = []
+        # self.calendar = []
 		# Use Linked List instead, much more faster
-		# self.calender = collections.deque()
+        self.calendar = collections.deque()
 
     def book(self, start: int, end: int) -> bool:
         right = len(self.calendar)
