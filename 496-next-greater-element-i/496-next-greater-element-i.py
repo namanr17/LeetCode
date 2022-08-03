@@ -4,13 +4,12 @@ class Solution:
         stack = collections.deque()
         
         for num in nums2[::-1]:
-            while(len(stack) and stack[-1] < num):
+            while(stack and stack[-1] < num):
                 stack.pop()
                 
-            if len(stack):
+            if stack:
                 ngr[num] = stack[-1]
-            else:   ngr[num] = -1
                 
             stack.append(num)
             
-        return [ngr[num] for num in nums1]
+        return [ngr.get(num, -1) for num in nums1]
