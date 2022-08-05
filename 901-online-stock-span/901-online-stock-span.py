@@ -2,18 +2,14 @@ class StockSpanner:
 
     def __init__(self):
         self.idx = 0
-        self.arr = [float(inf)]
-        self.stack = deque([0])
+        self.stack = deque([(0, float(inf))])
 
     def next(self, price: int) -> int:
         self.idx += 1
-        top = self.stack[-1]
-        while(self.arr[top] <= price):
+        while(self.stack[-1][1] <= price):
             self.stack.pop()
-            top = self.stack[-1]
-        self.stack.append(self.idx)
-        self.arr.append(price)
-        return self.idx - top
+        self.stack.append((self.idx, price))
+        return self.idx - self.stack[-2][0]
         
 
 
