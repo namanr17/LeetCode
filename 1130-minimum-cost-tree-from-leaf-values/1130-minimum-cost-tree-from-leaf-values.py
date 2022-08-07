@@ -18,8 +18,6 @@ class Solution:
                 stack_ngr.pop()
             ngr[j] = stack_ngr[-1] if stack_ngr else float('inf')
             stack_ngr.append(arr[j])
-            
-        print(ngl, ngr)
         
         cost = 0
         for i in range(n):
