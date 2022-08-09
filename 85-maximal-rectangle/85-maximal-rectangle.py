@@ -30,8 +30,6 @@ class Solution:
             for i in range(cols):
                 width = nsr[i] - nsl[i] - 1
                 maxArea = max(maxArea, heights[i]*width)
-                
-            # print(heights, nsl, nsr, maxArea)
             
             j += 1
         
