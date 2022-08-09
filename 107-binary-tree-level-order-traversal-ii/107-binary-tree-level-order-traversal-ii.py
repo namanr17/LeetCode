@@ -17,9 +17,8 @@ class Solution:
                 solve(root.left, h+1)
             if root.right:
                 solve(root.right, h+1)
-        
             return
         
         solve(root, 0)
         
-        return [ret[i] for i in list(ret.keys())[::-1]]
+        return list(ret.values())[::-1]
