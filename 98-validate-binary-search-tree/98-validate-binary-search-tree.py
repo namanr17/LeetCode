@@ -6,8 +6,6 @@
 #         self.right = right
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        if not root:
-            return True
         
         def solve(node: Optional[TreeNode]):
             if not node:
