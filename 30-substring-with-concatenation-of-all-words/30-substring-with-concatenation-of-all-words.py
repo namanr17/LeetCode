@@ -7,15 +7,20 @@ class Solution:
             return []
         
         ret = []
+        bagOfWords = Counter(words)
         for i in range(strLen - substrLen + 1):
-            BOW = Counter(words)
+            BOW = bagOfWords.copy()
             substr = s[i:i+substrLen]
             
-            for chunk in [substr[j:j+m] for j in range(0, substrLen, m)]:
-                if not BOW[chunk]:  break
+            flag = True
+            for j in range(0, substrLen, m):
+                chunk = substr[j:j+m]
+                if not BOW[chunk]:
+                    flag = False
+                    break
                 BOW[chunk] -= 1
             
-            if sum(BOW.values()) == 0:
+            if flag and sum(BOW.values()) == 0:
                 ret.append(i)
                 
         return ret
