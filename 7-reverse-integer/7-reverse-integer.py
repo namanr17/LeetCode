@@ -4,13 +4,18 @@ class Solution:
         
         sign_x = -1 if x < 0 else 1
         x = abs(x)
+        MOD = 2**31
+        if sign_x > 0:
+            MOD -= 1
         
-        while(x):
+        while(x != 0):
+            prev = ret
             ret *= 10
-            ret += x % 10
+            ret = (ret + x % 10) % MOD
             x = x // 10
             
-        if -2**31 <= ret * sign_x <= 2**31-1:
-            return ret * sign_x
-        return 0
-        
+            if ret // 10 != prev:
+                return 0
+            
+            
+        return sign_x * ret
