@@ -5,7 +5,6 @@ class Solution:
         if endWord not in wordList:
             return 0
         
-        n = len(wordList)
         nodes = set(wordList + [beginWord])
         queue = deque([beginWord])
         ret = 0
