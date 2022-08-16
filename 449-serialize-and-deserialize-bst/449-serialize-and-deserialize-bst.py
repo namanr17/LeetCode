@@ -1,69 +1,16 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
-
 class Codec:
 
-    def serialize(self, root: Optional[TreeNode]) -> str:
-        """Encodes a tree to a single string.
-        """
+    def serialize(self, root: TreeNode) -> str:
         if not root:
-            return 'None'
+            return ''
+        return str(root.val) + ',' + self.serialize(root.left) + self.serialize(root.right)
         
-        data = []
-        q = deque([root])
-        while(q):
-            k = len(q)
-            while(k):
-                k -= 1
-                node = q.popleft()
-                if not node:
-                    data.append('None')
-                    continue
-                
-                data.append(str(node.val))
-                q.append(node.left)
-                q.append(node.right)
+    def deserialize(self, data: str) -> TreeNode:
+        deq = deque(int(val) for val in data.split(',') if val)
         
-        return ' '.join(data)
-
-    def deserialize(self, data: str) -> Optional[TreeNode]:
-        """Decodes your encoded data to tree.
-        """
-        leveledTree = data.split(' ')
-        
-        if leveledTree[0] == 'None':
-            return None
-        
-        itr = 1
-        root = TreeNode(leveledTree[0])
-        q = deque([root])
-        while(q):
-            k = len(q)
-            while(k):
-                node = q.popleft()
-                left, right = leveledTree[itr], leveledTree[itr+1]
-                
-                if left != 'None':
-                    node.left = TreeNode(int(left))
-                    q.append(node.left)
-                
-                if right != 'None':
-                    node.right = TreeNode(int(right))
-                    q.append(node.right)
-                
-                k -= 1
-                itr += 2
-        
-        return root
-
-# Your Codec object will be instantiated and called as such:
-# Your Codec object will be instantiated and called as such:
-# ser = Codec()
-# deser = Codec()
-# tree = ser.serialize(root)
-# ans = deser.deserialize(tree)
-# return ans
+        def build_tree(lower_bound, upper_bound):
+            if deq and lower_bound < deq[0] < upper_bound:
+                val = deq.popleft()
+                return TreeNode(val, build_tree(lower_bound, val), build_tree(val, upper_bound))
+               
+        return build_tree(float('-inf'), float('inf'))
