@@ -3,6 +3,4 @@ class Solution:
         morse = [".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."]
         
         morseWords = [''.join([morse[ord(char) - ord('a')] for char in word]) for word in words]
-            
-        count = Counter(morseWords)
-        return len(count)
+        return len(set(morseWords))
