@@ -1,10 +1,11 @@
 class Solution:
     def minimumDeletions(self, s: str) -> int:
-        a, b, cnt = s.count('a'), 0, len(s)
-        for c in s:
-            if c == 'b':
-                cnt = min(cnt, a + b)
-                b += 1
-            else:
-                a -= 1
-        return min(cnt, b)
+        ret = 0
+        countb = 0
+        for char in s:
+            if countb and char == 'a':
+                countb -= 1
+                ret += 1
+            elif char == 'b':
+                countb += 1
+        return ret
