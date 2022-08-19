@@ -1,21 +1,22 @@
-class Solution:
-    def racecar(self, target: int) -> int:
-        
-        #1. Initialize double ended queue as 0 moves, 0 position, +1 velocity
-        queue = collections.deque([(0, 0, 1)])
-        while queue:
-            
-            # (moves) moves, (pos) position, (vel) velocity)
-            moves, pos, vel = queue.popleft()
+class Solution(object):
+    def racecar(self, target):
+        K = target.bit_length() + 1
+        barrier = 1 << K
+        pq = [(0, target)]
+        dist = [float('inf')] * (2 * barrier + 1)
+        dist[target] = 0
 
-            if pos == target:
-                return moves
-            
-            #2. Always consider moving the car in the direction it is already going
-            queue.append((moves + 1, pos + vel, 2 * vel))
-            
-            #3. Only consider changing the direction of the car if one of the following conditions is true
-            #   i.  The car is driving away from the target.
-            #   ii. The car will pass the target in the next move.  
-            if (pos + vel > target and vel > 0) or (pos + vel < target and vel < 0):
-                queue.append((moves + 1, pos, -vel / abs(vel)))
+        while pq:
+            steps, targ = heapq.heappop(pq)
+            if dist[targ] > steps: continue
+
+            for k in range(K+1):
+                walk = (1 << k) - 1
+                steps2, targ2 = steps + k + 1, walk - targ
+                if walk == targ: steps2 -= 1 #No "R" command if already exact
+
+                if abs(targ2) <= barrier and steps2 < dist[targ2]:
+                    heapq.heappush(pq, (steps2, targ2))
+                    dist[targ2] = steps2
+
+        return dist[0]
