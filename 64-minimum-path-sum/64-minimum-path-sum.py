@@ -1,19 +1,19 @@
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])
+        if len(grid) <= 0 or grid is None:
+            return 0
+        rows = len(grid)
+        cols = len(grid[0])
         
-        heap = [(grid[0][0], 0, 0)]
-        cost = [[inf for _ in range(n)] for _ in range(m) ]
-        cost[0][0] = grid[0][0]
+        for r in range(rows):
+            for c in range(cols):
+                if r==0 and c==0: # We just want to skip the top-left corner of the grid
+                    continue
+                if r-1<0: # Cases for elements in top row
+                    grid[r][c] = grid[r][c] + grid[r][c-1]  
+                elif c-1<0: # Cases for elements in leftmost column
+                    grid[r][c] = grid[r][c] + grid[r-1][c]  
+                else: # Normal cell
+                    grid[r][c] = grid[r][c] + min(grid[r-1][c], grid[r][c-1])               
         
-        while(heap):
-            W, x, y = heappop(heap)
-        
-            if (x, y) == (m-1, n-1):    break
-            
-            for x_next, y_next in [(x+1, y), (x, y+1)]:
-                if x_next < m and y_next < n and cost[x_next][y_next] > cost[x][y] + grid[x_next][y_next]:
-                    cost[x_next][y_next] = cost[x][y] + grid[x_next][y_next]
-                    heappush(heap, (cost[x_next][y_next], x_next, y_next))
-            
-        return W
+        return grid[rows-1][cols-1]
