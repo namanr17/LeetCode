@@ -18,9 +18,9 @@ class Solution:
         P[2], A[2], L[2] = 3, 2, 3
         
         for i in range(3, n+1):
-            A[i] = ((A[i-1] + A[i-2]) % MOD + A[i-3]) % MOD
-            P[i] = ((P[i-1] + L[i-1]) % MOD + A[i-1]) % MOD
-            L[i] = (((P[i-1] + A[i-1]) % MOD + P[i-2]) % MOD + A[i-2]) % MOD
+            A[i] = (A[i-1] + A[i-2] + A[i-3]) % MOD
+            P[i] = (P[i-1] + L[i-1] + A[i-1]) % MOD
+            L[i] = (P[i-1] + A[i-1] + P[i-2] + A[i-2]) % MOD
             
-        return ((A[n] + P[n]) % MOD + L[n]) % MOD
+        return (A[n] + P[n] + L[n]) % MOD
         
