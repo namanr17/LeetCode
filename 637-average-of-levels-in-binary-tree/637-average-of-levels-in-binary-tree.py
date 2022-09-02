@@ -10,17 +10,16 @@ class Solution:
         dq = deque([root])
         
         while(dq):
-            n = len(dq)
-            ret.append(0)
+            sum_, len_ = 0, len(dq)
             
-            for _ in range(n):
+            for _ in range(len_):
                 node = dq.popleft()
-                ret[-1] += node.val
+                sum_ += node.val
                 
                 if node.left:   dq.append(node.left)
                 if node.right:  dq.append(node.right)
             
-            ret[-1] /= n
+            ret.append( sum_ / len_ )
         
         return ret
         
