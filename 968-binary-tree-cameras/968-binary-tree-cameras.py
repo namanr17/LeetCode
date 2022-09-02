@@ -14,8 +14,8 @@ class Solution:
             if node.right:  dfs(node.right, node)
             
             if node.left not in covered or node.right not in covered:
-                self.count += 1
                 covered.update({node, paren, node.left, node.right})
+                self.count += 1
                 
         dfs(root)
         if root not in covered:
