@@ -18,6 +18,6 @@ class Solution:
             
             for i in range(cols):
                 dp[i] = points[r][i] + max(left[i], right[i])
-            prev = dp
+            prev = dp[:]
             
         return max(dp)
