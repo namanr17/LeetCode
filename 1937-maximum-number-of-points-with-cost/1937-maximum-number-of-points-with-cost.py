@@ -3,11 +3,11 @@ class Solution:
         rows, cols = len(points), len(points[0])
         
         if rows == 1:   return max(points[0])
+        if cols == 1:   return sum(points[i][0] for i in range(rows))
         
         prev = points[0]
+        dp, left, right = [None] * cols, [None] * cols, [None] * cols
         for r in range(1, rows):
-            dp, left, right = [None] * cols, [None] * cols, [None] * cols
-            
             left[0] = prev[0]
             for i in range(1, cols):
                 left[i] = max(left[i-1]-1, prev[i])
