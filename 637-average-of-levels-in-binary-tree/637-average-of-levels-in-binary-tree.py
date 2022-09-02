@@ -10,16 +10,17 @@ class Solution:
         count = defaultdict(float)
         
         def dfs(node, h=0):
-            if not node:    return h
+            if not node:    return
             
             level[h] += node.val
             count[h] += 1
             
-            return max(dfs(node.left, h+1), dfs(node.right, h+1))
+            dfs(node.left, h+1)
+            dfs(node.right, h+1)
             
-        ret = [0] * dfs(root)
-        
+        dfs(root)
+        ret = []
         for h in level:
-            ret[h] = level[h] / count[h]
+            ret.append(level[h] / count[h])
         
         return ret
