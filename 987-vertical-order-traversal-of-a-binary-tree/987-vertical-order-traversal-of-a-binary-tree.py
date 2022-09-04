@@ -15,8 +15,7 @@ class Solution:
         M, ret = defaultdict(list), []
         dfs(root, 0, 0)
         
-        keys = sorted(M.keys())
-        for c in keys:
+        for c in sorted(M):
             nodes = sorted(M[c], key=lambda x: (x[0], x[1]))
             ret.append([val for (r, val) in nodes])
         
