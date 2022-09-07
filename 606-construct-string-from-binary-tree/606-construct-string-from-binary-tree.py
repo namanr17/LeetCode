@@ -5,14 +5,9 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def tree2str(self, root: Optional[TreeNode]) -> str:
-        if not root:    return ''
-        
-        if not root.left and not root.right:
-            return str(root.val)
-        
-        if not root.right:
-            return str(root.val) + '(' + self.tree2str(root.left) + ')'
-        
-        return str(root.val) + '(' + self.tree2str(root.left) + ')' + '(' + self.tree2str(root.right) + ')'
+    def tree2str(self, t):
+        if not t: return ''
+        left = '({})'.format(self.tree2str(t.left)) if (t.left or t.right) else ''
+        right = '({})'.format(self.tree2str(t.right)) if t.right else ''
+        return '{}{}{}'.format(t.val, left, right)
         
