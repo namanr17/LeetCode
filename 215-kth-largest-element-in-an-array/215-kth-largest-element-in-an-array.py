@@ -2,10 +2,17 @@ class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         pivot = random.choice(nums)
         
-        left = [n for n in nums if n > pivot]
-        right = [n for n in nums if n < pivot]
+        M = 0
+        left, right = [], []
         
-        L, M = len(left), len(nums) - len(right) - len(left)
+        for n in nums:
+            if n > pivot:
+                left.append(n)
+            elif n < pivot:
+                right.append(n)
+            else:   M += 1
+        
+        L = len(left)
         
         if k <= L:
             return self.findKthLargest(left, k)
