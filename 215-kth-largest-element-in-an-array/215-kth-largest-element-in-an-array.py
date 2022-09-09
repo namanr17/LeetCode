@@ -1,25 +1,29 @@
 class Solution:
     def findKthLargest(self, nums, k):
-        # convert the kth largest to smallest
-        return self.findKthSmallest(nums, len(nums)+1-k)
-
-    def findKthSmallest(self, nums, k):
-        if nums:
-            pos = self.partition(nums, 0, len(nums)-1)
-            if k > pos+1:
-                return self.findKthSmallest(nums[pos+1:], k-pos-1)
-            elif k < pos+1:
-                return self.findKthSmallest(nums[:pos], k)
-            else:
-                return nums[pos]
-
-    # choose the right-most element as pivot   
-    def partition(self, nums, l, r):
-        low = l
-        while l < r:
-            if nums[l] < nums[r]:
-                nums[l], nums[low] = nums[low], nums[l]
-                low += 1
-            l += 1
-        nums[low], nums[r] = nums[r], nums[low]
-        return low
+        
+        def RandomPart(l, r):
+            p = random.randint(l, r)
+            nums[p], nums[r] = nums[r], nums[p]
+            
+            m = l
+            for i in range(l, r):
+                if nums[i] < nums[r]:
+                    nums[m], nums[i] = nums[i], nums[m]
+                    m += 1
+            
+            nums[m], nums[r] = nums[r], nums[m]
+            return m
+        
+        def QuickSelect(lo, hi, k):
+            if lo == hi:    return nums[lo]
+            
+            pivot = RandomPart(lo, hi)
+            rank = pivot - lo + 1
+            
+            if k < rank:
+                return QuickSelect(lo, pivot - 1, k)
+            elif k > rank:
+                return QuickSelect(pivot + 1, hi, k - rank)
+            else:   return nums[pivot]
+            
+        return QuickSelect(0, len(nums)-1, len(nums)-k+1)
