@@ -1,17 +1,15 @@
 class Solution:
-    def bagOfTokensScore(self, tokens: List[int], power: int) -> int:
-        tokens.sort()
+    def bagOfTokensScore(self, tokens, P: int) -> int:
+        queue = deque(sorted(tokens))
+        score = 0
         
-        lo, hi, score = 0, len(tokens) - 1, 0
-        while(lo < hi):
-            if tokens[lo] <= power:
-                power -= tokens[lo]
+        while queue and P >= queue[0]:
+            while queue and P >= queue[0]:
+                P -= queue.popleft()
                 score += 1
-                lo += 1
-            elif score:
-                power += tokens[hi]
+                
+            if score > 0 and len(queue) > 1:
+                P += queue.pop()
                 score -= 1
-                hi -= 1
-            else:   break
-        
-        return score + 1 if lo == hi and tokens[lo] <= power else score
+                
+        return score
