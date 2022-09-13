@@ -1,20 +1,28 @@
 class Solution:
-    def validUtf8(self, data: List[int]) -> bool:
+    def validUtf8(self, data):
+        n_bytes = 0
+
+        # Mask to check if the most significant bit (8th bit from the left) is set or not
+        mask1 = 1 << 7
+
+        # Mask to check if the second most significant bit is set or not
+        mask2 = 1 << 6
         
-        def valid(i):
-            return i < len(data) and (128 <= data[i] % 256 < 192)
-        
-        i = 0
-        while(i < len(data)):
-            x = data[i] % 256
-            if 0 <= x < 128:
-                i += 1
-            elif 192 <= x < 224 and valid(i+1):
-                i += 2
-            elif 194 <= x < 240 and valid(i+1) and valid(i+2):
-                i += 3
-            elif 240 <= x < 248 and valid(i+1) and valid(i+2) and valid(i+3):
-                i += 4
-            else:   break
-        
-        return True if i == len(data) else False
+        for num in data:
+            mask = 1 << 7
+            if n_bytes == 0:
+                while mask & num:
+                    n_bytes += 1
+                    mask = mask >> 1
+
+                if n_bytes == 0:    continue
+
+                if n_bytes == 1 or n_bytes > 4:
+                    return False
+            else:
+                if not (num & mask1 and not (num & mask2)):
+                    return False
+                
+            n_bytes -= 1
+            
+        return n_bytes == 0     
