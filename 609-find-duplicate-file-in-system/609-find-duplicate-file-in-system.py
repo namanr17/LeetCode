@@ -10,9 +10,4 @@ class Solution:
                 name, content = file.split('(')
                 files_dict[content[:-1]].append(dir_ + '/' + name)
             
-        ret = []
-        for key in files_dict:
-            if len(files_dict[key]) > 1:
-                ret.append(files_dict[key])
-                
-        return ret
+        return [i for i in files_dict.values() if len(i) > 1]
