@@ -1,52 +1,37 @@
 class Trie:
-    class Node:
-        """A node in the trie"""
-        
-        def __init__(self, char='\0', parent=None):
-            self.children = {}
-            self.char = char
-            self.final = False
-            self.parent = parent
-            
-        def descend(self, char, extend=False):
-            """Descend into the trie"""
-            
-            if not char in self.children:
-                if not extend: return None
-                self.children[char] = Trie.Node(char,self)
-                
-            return self.children[char]
 
     def __init__(self):
-        self.root = Trie.Node()
-        
+        self.root = {}
 
+        
     def insert(self, word: str) -> None:
         node = self.root
         
         for char in word:
-            node = node.descend(char, extend=True)
-        node.final = True
+            if char not in node:    node[char] = {}
+            node = node[char]
+        
+        node['isEnd'] = True 
 
         
     def search(self, word: str) -> bool:
         node = self.root
-        
-        for char in word:
-            node = node.descend(char, extend=False)
-            if not node:    return False
-        
-        return node.final
 
+        for char in word:
+            if char not in node:    return False
+            node = node[char]
+        
+        return 'isEnd' in node
+
+    
     def startsWith(self, prefix: str) -> bool:
         node = self.root
         
         for char in prefix:
-            node = node.descend(char, extend=False)
-            if not node:    return False
+            if char not in node:    return False
+            node = node[char]
         
         return True
-
 
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
