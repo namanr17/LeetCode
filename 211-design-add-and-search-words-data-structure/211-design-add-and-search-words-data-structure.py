@@ -6,15 +6,22 @@ class WordDictionary:
         node = self.trie
         for c in word:
             node = node.setdefault(c, {})
-        node['$'] = True
+        node['#'] = True
 
     def search(self, word: str) -> bool:
-        return self.searchNode(self.trie, word)
 
-    def searchNode(self, node, word: str) -> bool:
-        for i, c in enumerate(word):
-            if c == '.':
-                return any(self.searchNode(node[w], word[i+1:]) for w in node if w != '$')
-            if c not in node: return False
-            node = node[c]
-        return '$' in node
+        def dfs(idx, node) -> bool:
+            if idx == len(word):
+                return '#' in node
+            
+            if word[idx] == '.':
+                for child in node:
+                    if child != '#' and dfs(idx+1, node[child]):
+                        return True
+                    
+            if word[idx] in node:
+                return dfs(idx+1, node[word[idx]])
+            
+            return False
+        
+        return dfs(0, self.trie)
