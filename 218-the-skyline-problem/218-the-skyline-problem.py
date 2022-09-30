@@ -1,34 +1,18 @@
 class Solution:
-    def getSkyline(self, buildings):
-        """
-        :type buildings: List[List[int]]
-        :rtype: List[List[int]]
-        """
-        # `position` stores all coordinates where the largest height may change
-        # `alive` stores all buildings whose ranges cover the current coordinate
-        position = sorted(set([building[0] for building in buildings] + [building[1] for building in buildings]))
-        ptr, prevH = 0, 0
-        alive, ret = [], []
-        
-        for curPos in position:
-            # pop buildings that end at or before `curPos` out of the priority queue
-            # they are no longer "alive"
-            while alive and alive[0][1] <= curPos:
-                heappop(alive)
-            
-            # push [negative_height, end_point] of all buildings that start before `curPos` onto the priority queue
-            # they are candidates for the current highest building
-            while ptr < len(buildings) and buildings[ptr][0] <= curPos:
-                heappush(alive, [-buildings[ptr][2], buildings[ptr][1]])
-                ptr += 1
-            
-            # now alive[0] must be the largest height at the current position
-            if alive:
-                curH = -alive[0][0]
-                if curH != prevH:
-                    ret.append([curPos, curH])
-                    prevH = curH
-            else:  # no building -> horizon
-                ret.append([curPos, 0])
-                
-        return ret
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        # for the same x, (x, -H) should be in front of (x, 0)
+        # For Example 2, we should process (2, -3) then (2, 0), as there's no height change
+        x_height_right_tuples = sorted([(L, -H, R) for L, R, H in buildings] + [(R, 0, "doesn't matter") for _, R, _ in buildings])   
+        # (0, float('inf')) is always in max_heap, so max_heap[0] is always valid
+        result, max_heap = [[0, 0]], [(0, float('inf'))]
+        for x, negative_height, R in x_height_right_tuples:
+            while x >= max_heap[0][1]:
+                # reduce max height up to date, i.e. only consider max height in the right side of line x
+                heapq.heappop(max_heap)
+            if negative_height:
+                # Consider each height, as it may be the potential max height
+                heapq.heappush(max_heap, (negative_height, R))
+            curr_max_height = -max_heap[0][0]
+            if result[-1][1] != curr_max_height:
+                result.append([x, curr_max_height])
+        return result[1:]
