@@ -4,15 +4,14 @@ class Solution:
             return 0
         
         n = len(s)
-        dp = [0 for _ in range(n + 1)]
         
-        dp[-1] = 1
+        dp, dp_1, dp_2 = 0, 1, 1
         
         for i in range(n-1, -1, -1):
             if s[i] == '0':
-                dp[i] = 0
-                continue
+                dp = 0
+            else:   dp = dp_1 + dp_2 if i < n-1 and int(s[i:i+2]) < 27 else dp_1
             
-            dp[i] = dp[i+1] + dp[i+2] if i < n-1 and int(s[i:i+2]) < 27 else dp[i+1]
+            dp_1, dp_2 = dp, dp_1
         
-        return dp[0]
+        return dp
