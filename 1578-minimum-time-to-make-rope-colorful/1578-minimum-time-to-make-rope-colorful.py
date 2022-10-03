@@ -1,21 +1,14 @@
 class Solution:
     def minCost(self, colors: str, neededTime: List[int]) -> int:
         time = 0
-        last = 0
+        max_time = 0
         
-        colors += '_'
-        
-        for curr in range(1, len(colors)):
-            if colors[curr] == colors[last]:
-                continue
-                
-            toRemove = -inf
-            while(last < curr):
-                time += neededTime[last]
-                toRemove = max(toRemove, neededTime[last])
-                last += 1
+        for i in range(len(colors)):
+            if i > 0 and colors[i] != colors[i-1]:
+                max_time = 0
             
-            time -= toRemove
+            time += min(max_time, neededTime[i])
+            max_time = max(max_time, neededTime[i])
             
         return time
                 
