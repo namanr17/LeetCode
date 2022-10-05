@@ -5,19 +5,13 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def addOneRow(self, root: Optional[TreeNode], val: int, depth: int, left=True) -> Optional[TreeNode]:
-        if depth == 1:
-            return TreeNode(val, left=root, right=None) if left else TreeNode(val, left=None, right=root)
+    def addOneRow(self, root, v, d):
+        dummy, dummy.left = TreeNode(None), root
+        row = [dummy]
+        for _ in range(d - 1):
+            row = [kid for node in row for kid in (node.left, node.right) if kid]
+        for node in row:
+            node.left, node.left.left = TreeNode(v), node.left
+            node.right, node.right.right = TreeNode(v), node.right
+        return dummy.left
         
-        if root.left:
-            root.left = self.addOneRow(root.left, val, depth-1, True)
-        elif depth == 2:
-            root.left = TreeNode(val)
-        
-        if root.right:
-            root.right = self.addOneRow(root.right, val, depth-1, False)
-        elif depth == 2:
-            root.right = TreeNode(val)
-        
-        return root
-                
