@@ -1,29 +1,11 @@
 class Solution:
-    def intToRoman(self, num: int) -> str:
-        roman = {
-            1 : 'I',
-            5 : 'V',
-            10 : 'X',
-            50 : 'L',
-            100 : 'C',
-            500 : 'D',
-            1000 : 'M'
-        }
+    def intToRoman(self, num):
+        values = [ 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 ]
+        numerals = [ "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" ]
         
-        def convert(num):
-            if not num: return ''
+        res = ""
+        for i, v in enumerate(values):
+            res += (num//v) * numerals[i]
+            num %= v
             
-            base = 10 ** floor(log10(num))
-            x = num // base
-            
-            if x in {4, 9}:
-                return roman[base] + roman[(x+1) * base] + convert( num % base )
-            
-            buff = ''
-            while( x * base not in roman ):
-                buff += roman[base]
-                x -= 1
-            
-            return roman[x * base] + buff[::-1] + convert( num % base )
-        
-        return convert(num)
+        return res
