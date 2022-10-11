@@ -5,7 +5,7 @@ class Solution:
         # everything above threshold2 will form a triplet
         # dynamically change these two thresholds
         
-        threshold1 = threshold2 = float("inf")
+        threshold1 = threshold2 = inf
         for num in nums:
             # lower threshold1
             if num <= threshold1:
