@@ -3,11 +3,13 @@ class Solution:
         count = 0
         hm = defaultdict(int)
         
-        for x, y in product(nums1, nums2):
-            hm[x + y] += 1
+        for x in nums1:
+            for y in nums2:
+                hm[x + y] += 1
             
         
-        for x, y in product(nums3, nums4):
-            count += hm[-(x+y)]
+        for x in nums3:
+            for y in nums4:
+                count += hm[-(x+y)]
         
         return count
