@@ -1,26 +1,23 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
-class Solution:
-    def longestUnivaluePath(self, root: Optional[TreeNode]) -> int:
-        ans = 0
-        if not root:
-            return 0
-        
-        def solve(node, parenVal):
-            if node.val != parenVal:
-                solve(node, node.val)
-                return 0
+class Solution(object):
+    def longestUnivaluePath(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        # Time: O(n)
+        # Space: O(n)
+        longest = 0
+        def traverse(node):
+            if not node:    return 0
+            nonlocal longest
             
-            left = solve(node.left, node.val) if node.left else 0
-            right = solve(node.right, node.val) if node.right else 0
+            left_len, right_len = traverse(node.left), traverse(node.right)
             
-            nonlocal ans
-            ans = max(ans, left + right + 1)
-            return max(left, right) + 1
+            left = (left_len + 1) if node.left and node.left.val == node.val else 0
+            right = (right_len + 1) if node.right and node.right.val == node.val else 0
+            
+            longest = max(longest, left + right)
+            return max(left, right)
         
-        solve(root, root.val)
-        return ans - 1
+        traverse(root)
+        return longest
