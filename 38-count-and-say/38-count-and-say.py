@@ -1,8 +1,9 @@
 class Solution:
+    @lru_cache(None)
     def countAndSay(self, n):
-        s = '1'
-        for _ in range(n - 1):
-            s = ''.join(str(len(list(group))) + digit for digit, group in itertools.groupby(s))
-        return s
+        if n == 1:  return "1"
+        
+        s = self.countAndSay(n-1)
+        return ''.join(str(len(list(group))) + digit for digit, group in itertools.groupby(s))
             
         
